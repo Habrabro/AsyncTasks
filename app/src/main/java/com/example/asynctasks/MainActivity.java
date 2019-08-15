@@ -2,7 +2,6 @@ package com.example.asynctasks;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.os.SystemClock;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -19,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText editText;
     ProgressBar progressBar;
     TextView textView;
-    Context context = this;
+    ProgressTask progressTask = new ProgressTask();
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -40,9 +38,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId())
         {
             case R.id.btnStart:
-                new ProgressTask().execute(editText.getText().toString());
+                if (progressTask.getStatus() != AsyncTask.Status.RUNNING)
+                {
+                    progressTask = new ProgressTask();
+                    progressTask.execute(editText.getText().toString());
+                }
                 break;
             case R.id.btnStop:
+                progressTask.cancel(true);
                 break;
         }
     }
@@ -54,10 +57,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             for (int i = 0; i < 100; i++)
             {
+                if (isCancelled())
+                {
+                    return null;
+                }
                 publishProgress(i);
-                SystemClock.sleep(40);
+                SystemClock.sleep(20);
             }
-            return "https://yandex.ru/search/?text=" + strings[0];
+            return getResources().getString(R.string.str_requestURL) + strings[0];
         }
 
         @Override
@@ -68,10 +75,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         @Override
+        protected void onCancelled()
+        {
+            progressBar.setProgress(0);
+            textView.setText("0%");
+        }
+
+        @Override
         protected void onPostExecute(String s)
         {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(s));
             startActivity(browserIntent);
+            progressBar.setProgress(0);
+            textView.setText("0%");
         }
     }
 }

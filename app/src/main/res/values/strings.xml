@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AsyncTasks</string>
+
+    <string name="hint_etRequestField">Enter request</string>
+    <string name="hint_btnStart">Start</string>
+    <string name="hint_btnStop">Stop</string>
+
+    <string name="str_requestURL">https://yandex.ru/search/?text=</string>
 </resources>

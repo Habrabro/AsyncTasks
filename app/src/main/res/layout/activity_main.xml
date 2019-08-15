@@ -16,17 +16,19 @@
         <EditText android:id="@+id/etRequestField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter request"/>
+            android:textAlignment="viewStart"
+            android:hint="@string/hint_etRequestField"
+            android:inputType="text"/>
 
         <Button android:id="@+id/btnStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Start"/>
+            android:hint="@string/hint_btnStart"/>
 
         <Button android:id="@+id/btnStop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Stop"/>
+            android:hint="@string/hint_btnStop"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
